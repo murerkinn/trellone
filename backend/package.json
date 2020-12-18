@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "async-validator": "^3.5.1",
+    "connect-mongo": "^3.2.0",
+    "cookie-parser": "^1.4.5",
+    "cookie-session": "^1.4.0",
+    "cors": "^2.8.5",
+    "debug": "^4.3.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "http-errors": "^1.8.0",
+    "mongoose": "^5.11.8",
+    "mongoose-autopopulate": "^0.12.3",
+    "morgan": "^1.10.0",
+    "nanoid": "^3.1.20",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^6.0.1",
+    "socket.io": "^3.0.4"
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

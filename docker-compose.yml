@@ -1,0 +1,51 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo
+    ports:
+      - 37017:27017
+
+  trellone-backend:
+    image: trellone-backend
+    build:
+      context: backend
+      dockerfile: dev.Dockerfile
+    environment:
+      - VIRTUAL_HOST=trellone-starter.localhost/api,trellone-starter.localhost/api/*,trellone-starter.localhost/socket.io/*
+      - VIRTUAL_HOST_WEIGHT=1
+    expose:
+      - 3000
+    volumes:
+      - ./backend/src:/app/src
+
+  trellone-frontend:
+    image: trellone-frontend
+    build:
+      context: frontend
+      dockerfile: dev.Dockerfile
+    environment:
+      - HOST=0.0.0.0
+      - VIRTUAL_HOST=trellone-starter.localhost
+      - VIRTUAL_HOST_WEIGHT=0
+      - PORT=8080
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    expose:
+      - 8080
+
+  load-balancer:
+    image: dockercloud/haproxy:1.6.7
+    links:
+      - trellone-backend
+      - trellone-frontend
+    networks:
+      default:
+        aliases:
+          - trellone-starter.localhost
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 80:80
+      - 443:443
+    restart: on-failure
