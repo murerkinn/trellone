@@ -3,9 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Antd from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.css'
+import './assets/style/main.scss'
 
-Vue.use(Antd);
+Vue.use(Antd)
 
 Vue.config.productionTip = false
 
