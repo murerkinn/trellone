@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 import account from './account'
+import panel from './panel'
 
 Vue.use(Vuex)
 
@@ -11,7 +12,8 @@ axios.defaults.withCredentials = true
 
 const store = new Vuex.Store({
   modules: {
-    account
+    account,
+    panel
   }
 })
 
