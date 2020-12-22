@@ -6,6 +6,13 @@ const User = new mongoose.Schema(
   {
     name: String,
     sessionId: String,
+    panels: [
+      {
+        type: 'ObjectId',
+        ref: 'Panel',
+        autopopulate: true
+      }
+    ]
   },
   { timestamps: true }
 )
