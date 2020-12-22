@@ -11,6 +11,7 @@ const User = require('./models/user')
 const { mongoose } = require('./bootstrap')
 
 var userRouter = require('./routes/user')
+var panelRouter = require('./routes/panel')
 
 var app = express()
 app.use(
@@ -48,6 +49,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
 app.use('/api/account', userRouter)
+app.use('/api/panels', panelRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
