@@ -1,4 +1,5 @@
 const Validator = require('async-validator').default
+const socketServer = require('../socket-connection')
 
 const Panel = require('../models/panel')
 
@@ -34,5 +35,17 @@ exports.createPanel = async (req, res, next) => {
     res.status(200).send(panel)
   } catch (e) {
     return next(e)
+  }
+}
+
+exports.getPanel = async (req, res, next) => {
+  let panel
+
+  try {
+    panel = await Panel.findById(req.params.panelId)
+
+    res.status(200).send(panel)
+  } catch (e) {
+    return next(new Error('Panel not found'))
   }
 }
