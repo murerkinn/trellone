@@ -11,6 +11,8 @@ const actions = {
   FETCH_PANEL: 'fetchPanel',
   JOIN_PANEL: 'joinPanel',
   LEAVE_PANEL: 'leavePanel',
+  CREATE_LIST: 'createList',
+  CREATE_CARD: 'createCard',
   INIT: 'init'
 }
 
@@ -47,6 +49,12 @@ const panel = {
       const req = await axios.get(`/panels/${panelId}`)
 
       commit(mutations.SET_PANEL, req.data)
+    },
+    async [actions.CREATE_LIST](store, listInfo) {
+      await axios.post(`/panels/${listInfo.panelId}/lists`, listInfo.values)
+    },
+    async [actions.CREATE_CARD](store, cardInfo) {
+      await axios.post(`/panels/${cardInfo.panelId}/lists/${cardInfo.listId}/card`, cardInfo.values)
     }
   }
 }
