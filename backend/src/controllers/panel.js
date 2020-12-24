@@ -91,3 +91,24 @@ exports.createCard = async (req, res, next) => {
     return next(e)
   }
 }
+
+exports.updateCardsOfList = async (req, res, next) => {
+  try {
+    let panel = await Panel.findById(req.params.panelId)
+
+    let list = await panel.lists.find(l => l._id == req.params.listId)
+
+    let card = list.cards[req.body.oldIndex]
+
+    list.cards.splice(req.body.oldIndex, 1)
+    list.cards.splice(req.body.newIndex, 0, card)
+
+    await panel.save()
+
+    socketServer().to(req.params.panelId).emit('panel updated')
+
+    res.sendStatus(200)
+  } catch (e) {
+    return next(e)
+  }
+}
