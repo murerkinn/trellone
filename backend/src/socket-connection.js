@@ -6,5 +6,11 @@ module.exports = (app, server) => {
 
   socketServer = io(server)
 
+  socketServer.on('connection', socket => {
+    socket.on('join-panel', panelId => {
+      socket.join(panelId)
+    })
+  })
+
   return socketServer
 }
