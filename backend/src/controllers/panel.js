@@ -71,3 +71,23 @@ exports.createList = async (req, res, next) => {
     return next(e)
   }
 }
+
+exports.createCard = async (req, res, next) => {
+  let panel
+
+  try {
+    panel = await Panel.findOne({ _id: req.params.panelId })
+
+    let list = panel.lists.find(l => l._id == req.params.listId)
+
+    list.cards.push({ title: req.body.title, createdBy: req.session.userId })
+
+    await panel.save()
+
+    socketServer().to(req.params.panelId).emit('panel updated')
+
+    res.sendStatus(200)
+  } catch (e) {
+    return next(e)
+  }
+}

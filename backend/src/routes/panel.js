@@ -9,4 +9,6 @@ router.get('/:panelId', panelController.getPanel)
 
 router.post('/:panelId/lists', panelController.createList)
 
+router.post('/:panelId/lists/:listId/card', panelController.createCard)
+
 module.exports = router
