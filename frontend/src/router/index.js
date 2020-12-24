@@ -5,6 +5,7 @@ import Register from '../views/auth/Register.vue'
 import Login from '../views/auth/Login.vue'
 
 import Dashboard from '../views/Dashboard.vue'
+import Panel from '../views/Panel.vue'
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,15 @@ export default function init(store) {
         path: '/dashboard',
         name: 'dashboard',
         component: Dashboard,
+        beforeEnter(to, from, next) {
+          if (!store.state.account.user) return next('/login')
+          return next()
+        }
+      },
+      {
+        path: '/panels/:panelId',
+        name: 'panel',
+        component: Panel,
         beforeEnter(to, from, next) {
           if (!store.state.account.user) return next('/login')
           return next()
