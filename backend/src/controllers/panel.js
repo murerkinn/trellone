@@ -112,3 +112,25 @@ exports.updateCardsOfList = async (req, res, next) => {
     return next(e)
   }
 }
+
+exports.updateCardsBetweenLists = async (req, res, next) => {
+  try {
+    let panel = await Panel.findById(req.params.panelId)
+
+    let fromList = await panel.lists.find(l => l._id == req.body.fromListId)
+    let toList = panel.lists.find(l => l._id == req.body.toListId)
+
+    let card = fromList.cards[req.body.oldIndex]
+
+    toList.cards.splice(req.body.newIndex, 0, card)
+    fromList.cards.splice(req.body.oldIndex, 1);
+
+    await panel.save()
+
+    socketServer().to(req.params.panelId).emit('panel updated')
+
+    res.sendStatus(200)
+  } catch (e) {
+    return next(e)
+  }
+}

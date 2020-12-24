@@ -13,4 +13,6 @@ router.post('/:panelId/lists/:listId/card', panelController.createCard)
 
 router.post('/:panelId/lists/:listId/cards', panelController.updateCardsOfList)
 
+router.post('/:panelId/update-cards', panelController.updateCardsBetweenLists)
+
 module.exports = router
