@@ -49,3 +49,25 @@ exports.getPanel = async (req, res, next) => {
     return next(new Error('Panel not found'))
   }
 }
+
+exports.createList = async (req, res, next) => {
+  let panel
+
+  const list = {
+    title: req.body.title,
+    createdBy: req.session.userId
+  }
+
+  try {
+    panel = await Panel.findById(req.params.panelId)
+
+    panel.lists.push(list)
+    panel.save()
+
+    socketServer().to(req.params.panelId).emit('panel updated')
+
+    res.sendStatus(200)
+  } catch (e) {
+    return next(e)
+  }
+}

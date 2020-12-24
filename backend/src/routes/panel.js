@@ -7,4 +7,6 @@ router.post('/', panelController.createPanel)
 
 router.get('/:panelId', panelController.getPanel)
 
+router.post('/:panelId/lists', panelController.createList)
+
 module.exports = router
