@@ -6,6 +6,7 @@ const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const passport = require('passport')
 const cors = require('cors')
+const helmet = require('helmet')
 
 const User = require('./models/user')
 const { mongoose } = require('./bootstrap')
@@ -14,6 +15,9 @@ var userRouter = require('./routes/user')
 var panelRouter = require('./routes/panel')
 
 var app = express()
+
+app.use(helmet())
+
 app.use(
   cors({
     origin: true,
