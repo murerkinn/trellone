@@ -49,7 +49,14 @@ export default {
     ...mapState('panel', ['panel'])
   },
   methods: {
-    ...mapActions('panel', ['joinPanel', 'leavePanel', 'createList', 'createCard', 'updateCardsOfList', 'updateCardsBetweenLists']),
+    ...mapActions('panel', [
+      'joinPanel',
+      'leavePanel',
+      'createList',
+      'createCard',
+      'updateCardsOfList',
+      'updateCardsBetweenLists'
+    ]),
     async createListFormSubmit() {
       try {
         await this.createList({ panelId: this.$route.params.panelId, values: { title: this.listTitle } })
@@ -102,7 +109,12 @@ export default {
       this.updateCardsOfList({ listId: e.from.id, oldIndex: e.oldIndex, newIndex: e.newIndex })
     },
     removed(e) {
-      this.updateCardsBetweenLists({ fromListId: e.from.id, toListId: e.to.id, oldIndex: e.oldIndex, newIndex: e.newIndex })
+      this.updateCardsBetweenLists({
+        fromListId: e.from.id,
+        toListId: e.to.id,
+        oldIndex: e.oldIndex,
+        newIndex: e.newIndex
+      })
     }
   },
   created() {
