@@ -14,14 +14,23 @@
         a-button.topBtns(type="primary" icon="bell")
         a-dropdown(:trigger="['click']" placement="bottomLeft")
           a-menu(slot="overlay")
-            a-menu-item(key="1" @click="$emit('do-logout')") <a-icon type="logout" /> Logout
+            a-menu-item(key="1" @click="doLogout") <a-icon type="logout" /> Logout
 
           a-button.topBtns(type="primary" icon="user")
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
-  name: 'navbar'
+  name: 'navbar',
+  methods: {
+    ...mapActions('account', ['logout']),
+    async doLogout() {
+      await this.logout()
+      this.$router.push('/login?logoutSuccess=1')
+    }
+  }
 }
 </script>
 
