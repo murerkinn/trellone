@@ -13,6 +13,7 @@ const actions = {
   LEAVE_PANEL: 'leavePanel',
   CREATE_LIST: 'createList',
   CREATE_CARD: 'createCard',
+  UPDATE_CARD: 'updateCard',
   UPDATE_CARDS_OF_LIST: 'updateCardsOfList',
   UPDATE_CARDS_BETWEEN_LISTS: 'updateCardsBetweenLists',
   INIT: 'init'
@@ -57,6 +58,10 @@ const panel = {
     },
     async [actions.CREATE_CARD](store, cardInfo) {
       await axios.post(`/panels/${cardInfo.panelId}/lists/${cardInfo.listId}/card`, cardInfo.values)
+    },
+    async [actions.UPDATE_CARD](store, cardInfo) {
+      console.log(cardInfo)
+      await axios.put(`/panels/${cardInfo.panelId}/lists/${cardInfo.listId}/card/${cardInfo.values._id}`, { card: cardInfo.values })
     },
     async [actions.UPDATE_CARDS_OF_LIST]({ state }, data) {
       await axios.post(`/panels/${state.panel._id}/lists/${data.listId}/cards`, data)
