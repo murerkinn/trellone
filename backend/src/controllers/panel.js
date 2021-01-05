@@ -92,6 +92,34 @@ exports.createCard = async (req, res, next) => {
   }
 }
 
+exports.updateCard = async (req, res, next) => {
+  const update = {
+    '$set': {
+      'lists.$[list].cards.$[card]': req.body.card
+    }
+  }
+
+  const panel = await Panel.findOneAndUpdate(
+    {
+      _id: req.params.panelId,
+    },
+    update,
+    { arrayFilters: [{ 'list._id': req.params.listId }, { 'card._id': req.params.cardId }], new: true }
+  )
+
+  if (!panel) return next(new Error('Card not found'))
+
+  await panel.save()
+
+  try {
+    socketServer().to(req.params.panelId).emit('panel updated')
+
+    res.sendStatus(200)
+  } catch (error) {
+    return next(new Error('asd'))
+  }
+}
+
 exports.updateCardsOfList = async (req, res, next) => {
   try {
     let panel = await Panel.findById(req.params.panelId)
