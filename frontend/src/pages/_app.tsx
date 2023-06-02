@@ -1,3 +1,5 @@
+import '@/styles/main.scss'
+
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
