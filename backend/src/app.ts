@@ -72,6 +72,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/account', require('./domains/account/router').default)
+app.use('/boards', require('./domains/board/router').default)
 
 app.use(errors())
 app.use(errorHandler)
