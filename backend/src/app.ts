@@ -19,7 +19,6 @@ import passport from 'passport'
 
 import localStrategy from './domains/account/auth-strategies/local-strategy'
 import AccountManager from './domains/account/manager'
-import { ensureAuthentication } from './domains/account/middleware'
 import errorHandler from './lib/error-handler'
 
 const PORT = process.env.PORT || 4000
