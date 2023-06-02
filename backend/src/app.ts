@@ -15,7 +15,11 @@ import session from 'express-session'
 import helmet from 'helmet'
 import { MongoClient } from 'mongodb'
 import mongoose from 'mongoose'
+import passport from 'passport'
 
+import localStrategy from './domains/account/auth-strategies/local-strategy'
+import AccountManager from './domains/account/manager'
+import { ensureAuthentication } from './domains/account/middleware'
 import errorHandler from './lib/error-handler'
 
 const PORT = process.env.PORT || 4000
@@ -60,6 +64,15 @@ app.use(
     },
   })
 )
+
+passport.use(localStrategy)
+passport.serializeUser(AccountManager.serializeUser())
+passport.deserializeUser(AccountManager.deserializeUser())
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use('/account', require('./domains/account/router').default)
 
 app.use(errors())
 app.use(errorHandler)
