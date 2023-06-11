@@ -1,5 +1,8 @@
 import { Document, model, Schema } from 'mongoose'
 
+import commentSchema, { CommentDocument } from './comment'
+import labelSchema, { LabelDocument } from './label'
+
 export enum CARD_STATUS {
   ACTIVE = 'active',
   ARCHIVED = 'archived',
@@ -7,10 +10,14 @@ export enum CARD_STATUS {
 
 export interface CardRaw {
   title: string
+  column: Schema.Types.ObjectId
 }
 
 export interface CardDocument extends Document, CardRaw {
   description?: string
+  members: Schema.Types.ObjectId[]
+  comments: CommentDocument[]
+  labels: LabelDocument[]
   status: CARD_STATUS
 }
 
@@ -22,6 +29,24 @@ const cardSchema = new Schema<CardDocument>(
     },
     description: {
       type: String,
+    },
+    column: {
+      type: Schema.Types.ObjectId,
+      ref: 'Column',
+      required: true,
+    },
+    comments: {
+      type: [commentSchema],
+      default: [],
+    },
+    labels: {
+      type: [labelSchema],
+      default: [],
+    },
+    members: {
+      type: [Schema.Types.ObjectId],
+      ref: 'User',
+      default: [],
     },
     status: {
       type: String,
