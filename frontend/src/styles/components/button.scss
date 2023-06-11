@@ -1,0 +1,30 @@
+.ant-btn {
+  display: flex;
+  align-items: center;
+
+  &-icon {
+    margin-right: 6px;
+
+    svg {
+      font-size: 16px;
+      line-height: 20px;
+      vertical-align: middle;
+    }
+  }
+
+  &-default {
+    background-color: rgba(161, 189, 217, 0.08);
+    color: rgb(182, 194, 207);
+    border: none;
+
+    &:hover {
+      background-color: rgba(166, 197, 226, 0.16);
+      color: rgb(182, 194, 207) !important;
+    }
+
+    &:active {
+      background-color: rgba(191, 219, 248, 0.28);
+      color: rgb(182, 194, 207) !important;
+    }
+  }
+}
