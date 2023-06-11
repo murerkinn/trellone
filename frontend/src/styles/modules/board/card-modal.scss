@@ -1,0 +1,40 @@
+.card-modal {
+  max-width: 768px;
+  width: 90% !important;
+  margin: auto;
+
+  .ant-modal-content {
+    background-color: #31393f;
+
+    .ant-modal-header {
+      background: transparent;
+    }
+
+    .content-col {
+      flex: 3;
+    }
+
+    .actions-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      .actions-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .ant-btn {
+          width: 100%;
+          // font-size: 14px;
+        }
+
+        .ant-divider {
+          background-color: rgba(166, 197, 226, 0.16);
+          margin: 0;
+        }
+      }
+    }
+  }
+}

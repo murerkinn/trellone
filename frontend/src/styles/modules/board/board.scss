@@ -1,0 +1,23 @@
+.board {
+  // background: transparent;
+
+  .board-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 10px 12px 16px;
+    backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.24);
+  }
+
+  .board-content {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 12px;
+    height: calc(100vh - 120px);
+    padding: 12px 12px 24px;
+    flex-wrap: nowrap;
+  }
+}

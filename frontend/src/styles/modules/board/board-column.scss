@@ -1,0 +1,21 @@
+.board-column {
+  flex-basis: 300px;
+  flex-shrink: 0;
+  background-color: #101204;
+
+  .ant-card-head {
+    border-bottom: none;
+
+    .ant-card-head-title {
+      color: rgb(182, 194, 207);
+    }
+  }
+
+  .ant-card-body {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+  }
+}
