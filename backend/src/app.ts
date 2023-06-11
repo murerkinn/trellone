@@ -19,6 +19,9 @@ import passport from 'passport'
 
 import localStrategy from './domains/account/auth-strategies/local-strategy'
 import AccountManager from './domains/account/manager'
+import User from './domains/account/models/user'
+import BoardBridge from './domains/board/bridge'
+import BoardManager from './domains/board/manager'
 import errorHandler from './lib/error-handler'
 
 const PORT = process.env.PORT || 4000
@@ -73,6 +76,60 @@ app.use(passport.session())
 
 app.use('/account', require('./domains/account/router').default)
 app.use('/boards', require('./domains/board/router').default)
+
+app.post('/mock', async (req, res) => {
+  const user = await User.findOne({ email: 'asd@asd.com' })
+
+  if (!user) {
+    res.status(404).send('User not found')
+    return
+  }
+
+  let board: any = await BoardBridge.createBoard(
+    {
+      name: 'Test board',
+    },
+    user
+  )
+
+  if (!board) {
+    res.status(500).send('Board not created')
+    return
+  }
+
+  await BoardManager.addColumn(board._id, {
+    name: 'Backlog',
+  })
+
+  await BoardManager.addColumn(board._id, {
+    name: 'To Do',
+  })
+
+  await BoardManager.addColumn(board._id, {
+    name: 'In Progress',
+  })
+
+  await BoardManager.addColumn(board._id, {
+    name: 'In Review',
+  })
+
+  await BoardManager.addColumn(board._id, {
+    name: 'Done',
+  })
+
+  board = (await BoardManager.getBoardById(board._id)) as any
+
+  for (const column of board.columns) {
+    for (const i of [1, 2, 3, 4, 5]) {
+      await BoardManager.addCard(column._id, {
+        title: `Column ${column.name} Card ${i}`,
+        column: column._id,
+      })
+    }
+  }
+
+  res.json({ message: 'ok' })
+})
 
 app.use(errors())
 app.use(errorHandler)
