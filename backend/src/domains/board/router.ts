@@ -91,4 +91,8 @@ router.delete(
   }
 )
 
+router.get('/:boardId/cards/:cardId', async (req: RequestWithUser) => {
+  return BoardBridge.getCard(req.params.boardId, req.params.cardId, req.user)
+})
+
 export default router

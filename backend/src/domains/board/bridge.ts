@@ -7,6 +7,23 @@ import { BoardRaw } from './models/board'
 import { CardRaw } from './models/card'
 import { ColumnRaw } from './models/column'
 
+const checkIsAllowedToUpdateBoard = async (
+  boardId: string,
+  actor: UserDocument
+) => {
+  const board = await BoardManager.getBoardById(boardId)
+
+  if (!board) throw new NotFound('Board not found')
+
+  await ACLManager.checkIsAllowed(
+    actor._id,
+    `resource:board:${boardId}`,
+    'update'
+  )
+
+  return board
+}
+
 const createBoard = async (
   boardData: Omit<BoardRaw, 'createdBy'>,
   actor: UserDocument
@@ -50,15 +67,7 @@ const addColumn = async (
   columnData: ColumnRaw,
   actor: UserDocument
 ) => {
-  const board = await BoardManager.getBoardById(boardId)
-
-  if (!board) throw new NotFound('Board not found')
-
-  await ACLManager.checkIsAllowed(
-    actor._id,
-    `resource:board:${boardId}`,
-    'update'
-  )
+  await checkIsAllowedToUpdateBoard(boardId, actor)
 
   const updatedBoard = await BoardManager.addColumn(boardId, columnData)
 
@@ -71,15 +80,7 @@ const addCard = async (
   cardData: CardRaw,
   actor: UserDocument
 ) => {
-  const board = await BoardManager.getBoardById(boardId)
-
-  if (!board) throw new NotFound('Board not found')
-
-  await ACLManager.checkIsAllowed(
-    actor._id,
-    `resource:board:${boardId}`,
-    'update'
-  )
+  const board = await checkIsAllowedToUpdateBoard(boardId, actor)
 
   await BoardManager.addCard(columnId, cardData)
 
@@ -94,15 +95,7 @@ const moveCard = async (
   position: number,
   actor: UserDocument
 ) => {
-  const board = await BoardManager.getBoardById(boardId)
-
-  if (!board) throw new NotFound('Board not found')
-
-  await ACLManager.checkIsAllowed(
-    actor._id,
-    `resource:board:${boardId}`,
-    'update'
-  )
+  const board = await checkIsAllowedToUpdateBoard(boardId, actor)
 
   await BoardManager.moveCard(columnFromId, columnToId, cardId, position)
 
@@ -115,15 +108,7 @@ const archiveCard = async (
   cardId: string,
   actor: UserDocument
 ) => {
-  const board = await BoardManager.getBoardById(boardId)
-
-  if (!board) throw new NotFound('Board not found')
-
-  await ACLManager.checkIsAllowed(
-    actor._id,
-    `resource:board:${boardId}`,
-    'update'
-  )
+  const board = await checkIsAllowedToUpdateBoard(boardId, actor)
 
   await BoardManager.archiveCard(columnId, cardId)
 
@@ -136,19 +121,23 @@ const removeCard = async (
   cardId: string,
   actor: UserDocument
 ) => {
-  const board = await BoardManager.getBoardById(boardId)
-
-  if (!board) throw new NotFound('Board not found')
-
-  await ACLManager.checkIsAllowed(
-    actor._id,
-    `resource:board:${boardId}`,
-    'update'
-  )
+  const board = await checkIsAllowedToUpdateBoard(boardId, actor)
 
   await BoardManager.removeCard(columnId, cardId)
 
   return board
+}
+
+const getCard = async (
+  boardId: string,
+  cardId: string,
+  actor: UserDocument
+) => {
+  await getBoard(boardId, actor)
+
+  const card = await BoardManager.getCardById(cardId)
+
+  return card
 }
 
 const BoardBridge = {
@@ -160,6 +149,7 @@ const BoardBridge = {
   archiveCard,
   removeCard,
   moveCard,
+  getCard,
 }
 
 export default BoardBridge

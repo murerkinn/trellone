@@ -33,7 +33,7 @@ const addColumn = async (boardId: string, columnData: ColumnRaw) => {
 }
 
 const addCard = async (columnId: string, cardData: CardRaw) => {
-  const card = await Card.create(cardData)
+  const card = await Card.create({ ...cardData, column: columnId })
 
   await Column.findOneAndUpdate(
     { _id: columnId },
@@ -72,6 +72,15 @@ const moveCard = async (
       },
     }
   )
+
+  await Card.findOneAndUpdate(
+    {
+      _id: cardId,
+    },
+    {
+      column: columnToId,
+    }
+  )
 }
 
 const archiveCard = async (columnId: string, cardId: string) => {
@@ -106,6 +115,14 @@ const removeCard = async (columnId: string, cardId: string) => {
   return true
 }
 
+const getCardById = async (cardId: string) => {
+  const card = await Card.findOne({ _id: cardId })
+
+  const column = await Column.findOne({ cards: cardId })
+
+  return { ...card?.toJSON(), column: column?.toJSON() }
+}
+
 const BoardManager = {
   createBoard,
   getBoardById,
@@ -116,6 +133,7 @@ const BoardManager = {
   unarchiveCard,
   removeCard,
   moveCard,
+  getCardById,
 }
 
 export default BoardManager
